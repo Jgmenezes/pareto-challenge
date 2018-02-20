@@ -7,9 +7,10 @@ const Card = ({title, cardNumber}) => {
             <h1 className="card__title">{title}</h1>
             <ul className="card__list">
                 <li className="list__item">
-                    <input type="text" className="item__input" />
+                    <textarea name="" id="" cols="30" rows="4" placeholder='Descrição' className='item__input'></textarea>
                 </li>
             </ul>
+            <a href="#" className='card__link'>add a card +</a>
         </div>
     )
 }

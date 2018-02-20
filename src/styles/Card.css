@@ -18,6 +18,24 @@
 }
 
 .card__title {
+    border-bottom: 1px solid #ffffff;
     font-size: 20px;
     margin-bottom: 20px;
+    padding-bottom: 10px;
 }
+
+.item__input {
+    background: #ffffff;
+    border: none;
+    color: #777777;
+    font-family: 'Lato', 'sans-serif';
+    margin-bottom: 20px;
+    padding: 10px;
+    width: 92%;
+}
+
+.card__link {
+    color: #ffffff;
+    padding: 10px;
+}
+
