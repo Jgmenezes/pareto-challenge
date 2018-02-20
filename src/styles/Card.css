@@ -1,0 +1,23 @@
+.card {
+    color: #ffffff;
+    font-family: 'Lato', 'sans-serif';
+    margin: 20px;
+    padding: 20px;
+}
+
+.card--1 {
+    background: #47a2f0;
+}
+
+.card--2 {
+    background: #a866eb;
+}
+
+.card--3 {
+    background: #1ce07f;
+}
+
+.card__title {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
