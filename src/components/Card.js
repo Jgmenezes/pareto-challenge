@@ -1,16 +1,14 @@
 import React from 'react';
 import '../styles/Card.css';
 
-const Card = ({title, cardNumber}) => {
+const Card = (props) => {
     return (
-        <div className={`card card--${cardNumber}`}>
-            <h1 className="card__title">{title}</h1>
-            <ul className="card__list">
-                <li className="list__item">
-                    <textarea name="" id="" cols="30" rows="4" placeholder='Descrição' className='item__input'></textarea>
-                </li>
+        <div className={`card card--${props.cardNumber}`}>
+            <h1 className="card__title">{props.title}</h1>
+            <ul className={`card__list card__list--${props.cardNumber}`}>
+                <li className="list__item"></li>
             </ul>
-            <a href="#" className='card__link'>add a card +</a>
+            <a href="#" className='card__link' onClick={props.createCard}>add a card +</a>
         </div>
     )
 }
