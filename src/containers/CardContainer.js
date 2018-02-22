@@ -1,41 +1,58 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import Card from '../components/Card';
+import Textarea from '../components/Textarea';
 
 class CardContainer extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
-            contador: 0
+            addButtonClicked: false,
+            contador: 0,
+            arrayCard1: [],
+            arrayCard2: [],
+            arrayCard3: []
         };
     }
 
-    /* adicionando um item (card) na lista (interface) */
-    createCard(cardNumber) {
-        const cardList = document.querySelector(`.card__list--${cardNumber}`); // card correspondente
-        const textarea = `<textarea cols="30" rows="4" placeholder='Descrição' class='item__input item__input--${cardNumber}--${this.state.contador}'></textarea>`; // textarea a ser adicionada
-        const list = document.createElement('li');
-        list.className = 'list__item';
-        list.innerHTML = textarea; //adicionando o textarea no elemento li
-        cardList.appendChild(list); //inserindo li + textarea no card
-        document.querySelector(`.item__input--${cardNumber}--${this.state.contador}`).focus(); // focando no textarea após ser criado
-        this.setState({ contador: this.state.contador + 1 }); // alterando o contador para tornar a class do próximo textarea única
-    }    
+    handleAddTextarea = (cardNumber) => {
+        if (cardNumber === 1) {
+            const joined1 = this.state.arrayCard1.concat(<Textarea key={`${this.props.cardNumber}--${this.state.contador}`} cardNumber={this.props.cardNumber} contador={this.state.contador} />)
+            this.setState({
+                addButtonClicked: true,
+                contador: this.state.contador + 1,
+                arrayCard1: joined1
+            });
+        }
+
+        if (cardNumber === 2) {
+            const joined2 = this.state.arrayCard2.concat(<Textarea key={`${this.props.cardNumber}--${this.state.contador}`} cardNumber={this.props.cardNumber} contador={this.state.contador} />)
+            this.setState({
+                addButtonClicked: true,
+                contador: this.state.contador + 1,
+                arrayCard2: joined2
+            });
+        }
+
+        if (cardNumber === 3) {
+            const joined3 = this.state.arrayCard3.concat(<Textarea key={`${this.props.cardNumber}--${this.state.contador}`} cardNumber={this.props.cardNumber} contador={this.state.contador} />)
+            this.setState({
+                addButtonClicked: true,
+                contador: this.state.contador + 1,
+                arrayCard3: joined3
+            });
+        }
+        /* focus no textarea após ser criado */
+        setTimeout(() => { document.querySelector(`.item__input--${this.props.cardNumber}--${this.state.contador - 1}`).focus() }, 100);
+    }
 
     render() {
-        const { items } = this.props.allItems;
-        console.log(items);
-        
+        const string = 'arrayCard'+this.props.cardNumber;
         return (
-            <div>
-                <Card title='TODO' cardNumber={1} createCard={() => this.createCard(1)} />
-                <Card title='DOING' cardNumber={2} createCard={() => this.createCard(2)} />
-                <Card title='DONE' cardNumber={3} createCard={() => this.createCard(3)} />
-            </div>
+            <Card cardNumber={this.props.cardNumber} title={this.props.title} addButtonClicked={this.state.addButtonClicked} textareas={this.state[string]} handleAddTextarea={this.handleAddTextarea} />
         )
     }
 }
 
-const mapStateToProps = state => ({allItems: state.cardState})
-export default connect(mapStateToProps)(CardContainer)
+export default CardContainer
+

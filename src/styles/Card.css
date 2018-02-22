@@ -24,18 +24,21 @@
     padding-bottom: 10px;
 }
 
-.item__input {
-    background: #ffffff;
-    border: none;
-    color: #777777;
-    font-family: 'Lato', 'sans-serif';
-    margin-bottom: 20px;
-    padding: 10px;
-    width: 92%;
-}
-
 .card__link {
     color: #ffffff;
+    cursor: pointer;
     padding: 10px;
+}
+
+/* media queries */
+@media screen and (min-width: 1024px) {
+    .card {
+        margin: 0;
+        width: 30%;
+    }
+
+    .card--1, .card--2 {
+        margin-right: 10px;
+    }
 }
 

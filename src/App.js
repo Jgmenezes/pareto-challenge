@@ -6,7 +6,9 @@ class App extends Component {
   render() {
     return (
       <div className="cards">
-        <CardContainer />
+        <CardContainer title='TODO' cardNumber={1} />
+        <CardContainer title='DOING' cardNumber={2} />
+        <CardContainer title='DONE' cardNumber={3} />
       </div>
     );
   }

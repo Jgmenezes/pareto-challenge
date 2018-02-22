@@ -1,0 +1,9 @@
+.item__input {
+    background: #ffffff;
+    border: none;
+    color: #777777;
+    font-family: 'Lato', 'sans-serif';
+    margin-bottom: 20px;
+    padding: 10px;
+    width: 92%;
+}
