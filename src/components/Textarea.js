@@ -1,34 +1,29 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { createCard } from '../actions/CardAction';
 import '../styles/Textarea.css';
 
 class Textarea extends Component {
-    constructor(props) {
-        super(props);
-
-        this.handleBlur = this.handleBlur.bind(this);
-    }
-
-    handleBlur(e) {
-        this.props.createCard(e.target.value);
+    allowDrop = ev => {
+        ev.preventDefault();
     }
 
     render() {
+        const fixedCounter = this.props.contador;
+        const identificador = `${this.props.cardNumber}${this.props.contador}`;
         return (
             <textarea
                 cols='30'
                 rows='4'
                 placeholder='Descrição'
                 className={`item__input item__input--${this.props.cardNumber}--${this.props.contador}`}
-                onBlur={this.handleBlur}
+                onBlur={this.props.handleUpdateTextarea}
+                draggable="true"
+                onDragOver={this.allowDrop}
+                onDragStart={e => this.props.onStartDrag(e, identificador, fixedCounter)}
             >
+                {this.props.content}
             </textarea>
         )
     }
 }
 
-const mapStateToProps = state => ({ allItems: state.cardState })
-const mapDispatchToProps = dispatch => bindActionCreators({ createCard }, dispatch)
-export default connect(mapStateToProps, mapDispatchToProps)(Textarea)
+export default Textarea

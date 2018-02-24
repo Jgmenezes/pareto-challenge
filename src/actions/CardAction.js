@@ -1,8 +1,20 @@
-import { CREATE_CARD_1 } from './actionTypes';
-
-export function createCard(textAreaValue) {
+export function createCard(txtAreaObj) {
     return {
-        type: CREATE_CARD_1,
-        payload: textAreaValue
+        type: 'CREATE_CARD',
+        payload: txtAreaObj
+    }
+}
+
+export function updateCard(newTextAreaObj) {
+    return {
+        type: 'UPDATE_CARD',
+        payload: newTextAreaObj
+    }
+}
+
+export function deleteCard(cardId) {
+    return {
+        type: 'DELETE_CARD',
+        payload: cardId
     }
 }

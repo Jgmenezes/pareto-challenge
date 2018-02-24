@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { createCard, updateCard, deleteCard } from '../actions/CardAction';
 import Card from '../components/Card';
 import Textarea from '../components/Textarea';
 
@@ -8,51 +11,105 @@ class CardContainer extends Component {
 
         this.state = {
             addButtonClicked: false,
-            contador: 0,
-            arrayCard1: [],
-            arrayCard2: [],
-            arrayCard3: []
+            contador: 0
         };
+
+        this.handleAddTextarea = this.handleAddTextarea.bind(this);
     }
 
+    /* atualizar textarea */
+    handleUpdateTextarea = (e, id, counter) => {
+        e.preventDefault();
+        const textAreaobj = {
+            id: id,
+            tag: <Textarea key={`${this.props.cardNumber}--${counter}`}
+                cardNumber={this.props.cardNumber}
+                contador={this.state.contador - 1}
+                onStartDrag={this.onDragStart}
+                onCardDrop={this.onCardDrop}
+                handleUpdateTextarea={e => this.handleUpdateTextarea(e, id, counter)} 
+                fixedCounter={counter} />,
+            text: e.target.value,
+            fixedCounter: counter
+        }
+        this.props.updateCard(textAreaobj)
+    }
+
+    /* criar novo textarea */
     handleAddTextarea = (cardNumber) => {
-        if (cardNumber === 1) {
-            const joined1 = this.state.arrayCard1.concat(<Textarea key={`${this.props.cardNumber}--${this.state.contador}`} cardNumber={this.props.cardNumber} contador={this.state.contador} />)
-            this.setState({
-                addButtonClicked: true,
-                contador: this.state.contador + 1,
-                arrayCard1: joined1
-            });
+        const textAreaobj = {
+            id: `${this.props.cardNumber}${this.state.contador}`,
+            tag: <Textarea key={`${this.props.cardNumber}--${this.state.contador}`}
+                cardNumber={this.props.cardNumber}
+                contador={this.state.contador}
+                onStartDrag={this.onDragStart}
+                onCardDrop={this.onCardDrop}
+                handleUpdateTextarea={e => this.handleUpdateTextarea(e, textAreaobj.id, textAreaobj.fixedCounter)} />,
+            text: '',
+            fixedCounter: this.state.contador
         }
+        this.props.createCard(textAreaobj);
+        this.setState({
+            contador: this.state.contador + 1
+        });
+    }
 
-        if (cardNumber === 2) {
-            const joined2 = this.state.arrayCard2.concat(<Textarea key={`${this.props.cardNumber}--${this.state.contador}`} cardNumber={this.props.cardNumber} contador={this.state.contador} />)
-            this.setState({
-                addButtonClicked: true,
-                contador: this.state.contador + 1,
-                arrayCard2: joined2
-            });
-        }
+    allowDrop = ev => {
+        ev.preventDefault();
+    }
 
-        if (cardNumber === 3) {
-            const joined3 = this.state.arrayCard3.concat(<Textarea key={`${this.props.cardNumber}--${this.state.contador}`} cardNumber={this.props.cardNumber} contador={this.state.contador} />)
-            this.setState({
-                addButtonClicked: true,
-                contador: this.state.contador + 1,
-                arrayCard3: joined3
-            });
+    onDragStart = (e, id) => {
+        e.dataTransfer.dropEffect = "move"; //armazenando os dados a serem transferidos
+        e.dataTransfer.setData("text", [e,'###',id]);
+    }
+
+    onCardDrop = e => {
+        e.preventDefault();
+        const data = e.dataTransfer.getData("text/plain").split(",###,")[0]; //data do card arrastado
+        const id = e.dataTransfer.getData("text/plain").split(",###,")[1]; //id do card arrastado
+        /* montando um novo elemento p ser adicionado */
+        if (e.target.id !== "") {
+            const textAreaobj = {
+                id: e.target.id,
+                text: e.target.value,
+                cardNumberTarget: e.target.id,
+                tag: <Textarea key={`${this.props.cardNumber - 1}--${e.target.id}`}
+                    cardNumber={this.props.cardNumber}
+                    contador={this.state.contador - 1}
+                    onStartDrag={this.onDragStart}
+                    onCardDrop={this.onCardDrop}
+                    handleUpdateTextarea={e => this.handleUpdateTextarea(e, textAreaobj.id, textAreaobj.fixedCounter)}
+                    content={data} />,
+            }
+            /* removendo o item do array do card que foi arrastado */
+            this.props.deleteCard(e.target.id,);
+
+            /* adicionando o elemento na nova lista */
+            console.log(textAreaobj)
+            this.props.createCard(textAreaobj);
         }
-        /* focus no textarea após ser criado */
-        setTimeout(() => { document.querySelector(`.item__input--${this.props.cardNumber}--${this.state.contador - 1}`).focus() }, 100);
+        else {
+            console.log('saas')
+        }
     }
 
     render() {
-        const string = 'arrayCard'+this.props.cardNumber;
+        const reducerArrayName = `itemsCard${this.props.cardNumber}`;
+
         return (
-            <Card cardNumber={this.props.cardNumber} title={this.props.title} addButtonClicked={this.state.addButtonClicked} textareas={this.state[string]} handleAddTextarea={this.handleAddTextarea} />
+            <Card cardNumber={this.props.cardNumber}
+                title={this.props.title}
+                addButtonClicked={this.state.addButtonClicked}
+                textAreaItems={this.props.allItems[reducerArrayName]}
+                handleAddTextarea={this.handleAddTextarea}
+                allowDrop={this.allowDrop}
+                onCardDrop={this.onCardDrop}
+            />
         )
     }
 }
 
-export default CardContainer
+const mapStateToProps = state => ({ allItems: state.cardState })
+const mapDispatchToProps = dispatch => bindActionCreators({ createCard, updateCard, deleteCard }, dispatch)
+export default connect(mapStateToProps, mapDispatchToProps)(CardContainer)
 
