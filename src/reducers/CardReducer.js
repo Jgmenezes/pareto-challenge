@@ -5,7 +5,7 @@ export default function(state = INITIAL_STATE, action) {
         case 'CREATE_CARD':
             return {
                 ...state,
-                [`itemsCard${action.payload.cardNumberTarget !== "" && action.payload.cardNumberTarget !== undefined ? action.payload.cardNumberTarget : action.payload.id[0]}`]: state[`itemsCard${action.payload.id[0]}`].concat(action.payload)
+                [`itemsCard${action.payload.id[0]}`]: state[`itemsCard${action.payload.id[0]}`].concat(action.payload)
             }
         case 'UPDATE_CARD':
             return {

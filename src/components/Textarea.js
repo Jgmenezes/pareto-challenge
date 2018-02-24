@@ -1,29 +1,22 @@
-import React, { Component } from 'react';
+import React from 'react';
 import '../styles/Textarea.css';
 
-class Textarea extends Component {
-    allowDrop = ev => {
-        ev.preventDefault();
-    }
-
-    render() {
-        const fixedCounter = this.props.contador;
-        const identificador = `${this.props.cardNumber}${this.props.contador}`;
-        return (
-            <textarea
-                cols='30'
-                rows='4'
-                placeholder='Descrição'
-                className={`item__input item__input--${this.props.cardNumber}--${this.props.contador}`}
-                onBlur={this.props.handleUpdateTextarea}
-                draggable="true"
-                onDragOver={this.allowDrop}
-                onDragStart={e => this.props.onStartDrag(e, identificador, fixedCounter)}
-            >
-                {this.props.content}
-            </textarea>
-        )
-    }
+const Textarea = props => {
+    return (
+        <textarea
+            cols='30'
+            rows='4'
+            placeholder='Descrição'
+            className='item__input'
+            onBlur={props.handleUpdateTextarea}
+            draggable="true"
+            onDragOver={props.allowDrop}
+            onDragStart={props.onDragStart}
+            id={props.id}
+            defaultValue={props.content}
+        >
+        </textarea>
+    )
 }
 
 export default Textarea

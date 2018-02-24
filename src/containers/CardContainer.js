@@ -15,40 +15,47 @@ class CardContainer extends Component {
         };
 
         this.handleAddTextarea = this.handleAddTextarea.bind(this);
+        this.handleUpdateTextarea = this.handleUpdateTextarea.bind(this);
     }
 
     /* atualizar textarea */
-    handleUpdateTextarea = (e, id, counter) => {
+    handleUpdateTextarea = (e, id, counter, cardNumber) => {
         e.preventDefault();
-        const textAreaobj = {
+        const txtAreaObj = {
             id: id,
-            tag: <Textarea key={`${this.props.cardNumber}--${counter}`}
-                cardNumber={this.props.cardNumber}
-                contador={this.state.contador - 1}
-                onStartDrag={this.onDragStart}
-                onCardDrop={this.onCardDrop}
-                handleUpdateTextarea={e => this.handleUpdateTextarea(e, id, counter)} 
-                fixedCounter={counter} />,
             text: e.target.value,
-            fixedCounter: counter
+            fixedCounter: counter,
+            tag: <Textarea
+                key={e.target.value}
+                onDragStart={this.onDragStart}
+                handleAddTextarea={() => this.handleAddTextarea(cardNumber)}
+                handleUpdateTextarea={e => this.handleUpdateTextarea(e, `${this.props.cardNumber}${this.state.contador}`, this.state.contador)}
+                id={id}
+                content={e.target.value}
+                allowDrop={this.allowDrop}
+            />
         }
-        this.props.updateCard(textAreaobj)
+        /* chamando a action */
+        this.props.updateCard(txtAreaObj)
     }
 
     /* criar novo textarea */
     handleAddTextarea = (cardNumber) => {
-        const textAreaobj = {
-            id: `${this.props.cardNumber}${this.state.contador}`,
-            tag: <Textarea key={`${this.props.cardNumber}--${this.state.contador}`}
-                cardNumber={this.props.cardNumber}
-                contador={this.state.contador}
-                onStartDrag={this.onDragStart}
-                onCardDrop={this.onCardDrop}
-                handleUpdateTextarea={e => this.handleUpdateTextarea(e, textAreaobj.id, textAreaobj.fixedCounter)} />,
+        const txtAreaObj = {
+            id: `${cardNumber}${this.state.contador}`,
             text: '',
-            fixedCounter: this.state.contador
+            fixedCounter: this.state.contador,
+            tag: <Textarea
+                key={`${cardNumber}${this.state.contador}`}
+                onDragStart={this.onDragStart}
+                handleAddTextarea={() => this.handleAddTextarea(cardNumber)}
+                handleUpdateTextarea={e => this.handleUpdateTextarea(e, `${cardNumber}${this.state.contador}`, this.state.contador, cardNumber)}
+                id={`${cardNumber}${this.state.contador}`}
+                allowDrop={this.allowDrop}
+            />
         }
-        this.props.createCard(textAreaobj);
+        /* chamando a action */
+        this.props.createCard(txtAreaObj);
         this.setState({
             contador: this.state.contador + 1
         });
@@ -58,42 +65,54 @@ class CardContainer extends Component {
         ev.preventDefault();
     }
 
-    onDragStart = (e, id) => {
-        e.dataTransfer.dropEffect = "move"; //armazenando os dados a serem transferidos
-        e.dataTransfer.setData("text", [e,'###',id]);
+    /* invocado quando um card é arrastado */
+    onDragStart = e => {
+        const datas = [e.target.value, e.target.id];
+        e.dataTransfer.dropEffect = "move";
+        e.dataTransfer.setData("Text", datas);
     }
 
+    /* invocado quando um card é largado */
     onCardDrop = e => {
         e.preventDefault();
-        const data = e.dataTransfer.getData("text/plain").split(",###,")[0]; //data do card arrastado
-        const id = e.dataTransfer.getData("text/plain").split(",###,")[1]; //id do card arrastado
-        /* montando um novo elemento p ser adicionado */
-        if (e.target.id !== "") {
-            const textAreaobj = {
-                id: e.target.id,
-                text: e.target.value,
-                cardNumberTarget: e.target.id,
-                tag: <Textarea key={`${this.props.cardNumber - 1}--${e.target.id}`}
-                    cardNumber={this.props.cardNumber}
-                    contador={this.state.contador - 1}
-                    onStartDrag={this.onDragStart}
-                    onCardDrop={this.onCardDrop}
-                    handleUpdateTextarea={e => this.handleUpdateTextarea(e, textAreaobj.id, textAreaobj.fixedCounter)}
-                    content={data} />,
-            }
-            /* removendo o item do array do card que foi arrastado */
-            this.props.deleteCard(e.target.id,);
+        const newCardNumber = e.target.id;
+        const datas = e.dataTransfer.getData("text").split(",");
+        const value = datas[0];
+        const id = datas[1];
+        const fixedCounter = id.substring(1, id.length);
+        const cardNumber = id.substring(0, 1);
+        const newId = newCardNumber + '' + fixedCounter;
 
-            /* adicionando o elemento na nova lista */
-            console.log(textAreaobj)
-            this.props.createCard(textAreaobj);
-        }
-        else {
-            console.log('saas')
-        }
+        /* se tentar arrastar para outro card */
+        if (newCardNumber !== '') {
+            const txtAreaObj = {
+                id: newId,
+                text: value,
+                fixedCounter: fixedCounter,
+                tag: <Textarea
+                    key={`${value}${newId}`}
+                    onDragStart={this.onDragStart}
+                    handleAddTextarea={() => this.handleAddTextarea(newCardNumber)}
+                    handleUpdateTextarea={e => this.handleUpdateTextarea(e, `${newCardNumber}${fixedCounter}`, fixedCounter, newCardNumber)}
+                    id={newId}
+                    content={value}
+                    allowDrop={this.allowDrop}
+                />
+            }
+
+            /* excluindo card da respectiva lista */
+            this.props.deleteCard(id);
+
+            /* adicionando card na nova lista */
+            this.props.createCard(txtAreaObj);
+        }   
+        /* se tentar arrastar para o mesmo card não faz nada*/
+        else
+            return         
     }
 
     render() {
+        /* nome do respectivo array no reducer */
         const reducerArrayName = `itemsCard${this.props.cardNumber}`;
 
         return (
