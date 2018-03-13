@@ -55,7 +55,12 @@ class="graph"
 ```
 
 ### Entendendo:
-> metrics é o bloco principal  
-> calendar, metrics-options e graph são blocos dentro do bloco principal  
-> calendar__days, calendar__full-date e metrics-options__box são elementos dos seus respectivos blocos  
-> metrics-options__box--green, metrics-options__box--grey e metrics-options__box--purple são modificadores dos blocos  
+> metrics é o bloco principal
+> calendar, metrics-options e graph são blocos dentro do bloco principal
+> calendar__days, calendar__full-date e metrics-options__box são elementos dos seus respectivos blocos
+> metrics-options__box--green, metrics-options__box--grey e metrics-options__box--purple são modificadores dos blocos
+
+### Observações:
+* Os nomes das classes devem ser descritivos e intuitívos.
+* Se estamos utilizando o bootstrap, não devemos usar outro sistema de grid como o flexbox, css grid layout, etc.
+* Se for necessário posicionar o elemento de uma forma mais específica, utilizar a sua própria classe para isso.
