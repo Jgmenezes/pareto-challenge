@@ -55,7 +55,7 @@ class="graph"
 ```
 
 ### Entendendo:
-metrics é o bloco principal
-calendar, metrics-options e graph são blocos dentro do bloco principal
-calendar__days, calendar__full-date e metrics-options__box são elementos dos seus respectivos blocos
-metrics-options__box--green, metrics-options__box--grey e metrics-options__box--purple são modificadores dos blocos
+> metrics é o bloco principal  
+> calendar, metrics-options e graph são blocos dentro do bloco principal  
+> calendar__days, calendar__full-date e metrics-options__box são elementos dos seus respectivos blocos  
+> metrics-options__box--green, metrics-options__box--grey e metrics-options__box--purple são modificadores dos blocos  
