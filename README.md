@@ -37,8 +37,7 @@ class="metrics-options__box--grey"
 class="graph"
 ```
 
-##### Resultado final:      
-
+#### Resultado final:   
 ```html
 <div class="metrics">
     <div class="calendar">
@@ -54,3 +53,9 @@ class="graph"
     <div class="graph"></div>
 </div>
 ```
+
+### Entendendo:
+metrics é o bloco principal
+calendar, metrics-options e graph são blocos dentro do bloco principal
+calendar__days, calendar__full-date e metrics-options__box são elementos dos seus respectivos blocos
+metrics-options__box--green, metrics-options__box--grey e metrics-options__box--purple são modificadores dos blocos
