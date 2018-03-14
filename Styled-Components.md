@@ -30,3 +30,48 @@ render(
   <Title> Título </Title>
 );
 ```
+
+Adaptando baseado em props:
+```javascript
+const Button = styled.button`
+    background: ${props => props.primary ? 'red' ? 'white'}
+    color: ${props => props.primary ? 'white' : 'palevioletred'};
+    font-size: 20px;
+`;
+
+render(
+    <div>
+        <Button>Normal</Button>
+        <Button primary>Primary</Button>
+    </div>
+);
+```
+
+É frequente que tenhamos que usar um componente com pequenas mudanças para um caso específico. Nós
+podemos fazer essas mudanças baseado em alguma props, entretanto é um custo alto. Para fazer isso de uma maneira mais
+simples, podemos utilizar o *extend* para gerar outro componente. Ele substitui estilos duplicados do componente inicial
+e mantém os outros.
+```javascript
+const Button = styled.button`
+  color: palevioletred;
+  font-size: 1em;
+  margin: 1em;
+  padding: 0.25em 1em;
+  border: 2px solid palevioletred;
+  border-radius: 3px;
+`;
+
+// Extendendo Button com alguns estilos extra
+const TomatoButton = Button.extend`
+  color: tomato;
+  border-color: tomato;
+`;
+
+render(
+  <div>
+    <Button>Normal Button</Button>
+    <TomatoButton>Tomato Button</TomatoButton>
+  </div>
+);
+```
+
