@@ -64,3 +64,14 @@ class="graph"
 * Os nomes das classes devem ser descritivos e intuitívos.
 * Se estamos utilizando o bootstrap, não devemos usar outro sistema de grid como o flexbox, css grid layout, etc.
 * Se for necessário posicionar o elemento de uma forma mais específica, utilizar a sua própria classe para isso.
+
+### Exemplo de como devemos escrever as propriedades das classes:
+* Sempre em ordem alfabética
+* As cores, quando utilizadas em hex, devem conter 6 dígitos.
+```css
+.title {
+    color: #000000;
+    font-size: 15px;
+    padding: 10px;
+}
+```
