@@ -31,7 +31,7 @@ render(
 );
 ```
 
-Adaptando baseado em props:
+Adaptando baseado em props:  
 ```javascript
 const Button = styled.button`
     background: ${props => props.primary ? 'red' ? 'white'}
@@ -50,7 +50,7 @@ render(
 É frequente que tenhamos que usar um componente com pequenas mudanças para um caso específico. Nós
 podemos fazer essas mudanças baseado em alguma props, entretanto é um custo alto. Para fazer isso de uma maneira mais
 simples, podemos utilizar o *extend* para gerar outro componente. Ele substitui estilos duplicados do componente inicial
-e mantém os outros.
+e mantém os outros.  
 ```javascript
 const Button = styled.button`
   color: palevioletred;
@@ -74,4 +74,6 @@ render(
   </div>
 );
 ```
+
+
 
