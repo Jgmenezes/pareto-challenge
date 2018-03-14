@@ -74,6 +74,17 @@ render(
   </div>
 );
 ```
+Quando precisamos utilizar uma classe dentro de outra classe utilizamos a função css:
+```javascript
+import styled, { css } from 'styled-components';
 
+const complexMixin = css`
+    color: ${ props => props.whiteColor ? 'white' : 'black' }
+`;
+
+const StyledComp = styled.div`
+    ${ props => props.complex ? complexMixin : 'color: blue' }
+`;
+```
 
 
